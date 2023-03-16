@@ -24,9 +24,8 @@ def check_mitm():
     modem_ip = "192.168.1.1"
     
     colorama.init()
-    print(Fore.GREEN + "[+] You are safe now." + Style.RESET_ALL)
     stop = False
-    last=False
+    last =None
     while not stop:
         
             output = os.popen('arp -a').read()
@@ -46,16 +45,12 @@ def check_mitm():
                     if mac_address == modem_mac:
                         mitm_detected = True
                         last=mitm_detected
-                        winsound.Beep(frequency, duration)
-                        winsound.Beep(frequency, duration)
-                        winsound.Beep(frequency, duration)
-                        winsound.Beep(frequency, duration)
-                        winsound.Beep(frequency, duration)
-                        winsound.Beep(frequency, duration)
+                        for x in range(6):
+                            winsound.Beep(frequency, duration)
                         print(Fore.RED + f"[!] It could be a MITM attack! There is an anomaly between the device at {ip_address} and the modem." + Style.RESET_ALL)
                         time.sleep(5)
                         break
-            if not mitm_detected and mitm_detected!=last:
+            if not mitm_detected and (mitm_detected!=last or last ==None):
                 print(Fore.GREEN + "[+] You are safe now." + Style.RESET_ALL)
                 last=mitm_detected
                 time.sleep(5)
